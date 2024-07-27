@@ -5,7 +5,7 @@ function Header() {
       <div className="container mx-auto px-4 py-4 overflow-hidden flex justify-between items-center w-full ">
         <div className="logo">
           <Link href="/">
-            <h3 className="text-3xl font-bold">Auth Lucia</h3>
+            <h3 className="text-3xl font-bold">Lucia Data</h3>
           </Link>
         </div>
 
@@ -15,7 +15,7 @@ function Header() {
               <Link href="/">Home</Link>
             </li>
             <li>
-              <Link href="/login">Protected</Link>
+              <Link href="/data">Data</Link>
             </li>
           </ul>
         </nav>

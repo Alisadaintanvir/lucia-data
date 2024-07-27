@@ -1,8 +1,8 @@
 "use server";
 import { redirect } from "next/navigation";
-import { User } from "./models";
-import connectDB from "./db";
-import { createAuthSession } from "./auth";
+import { User } from "@/lib/models";
+import connectDB from "@/lib/db";
+import { createAuthSession } from "@/lib/auth";
 
 export const addUser = async (formData) => {
   await connectDB();
