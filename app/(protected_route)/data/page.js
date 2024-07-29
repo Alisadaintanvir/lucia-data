@@ -28,7 +28,13 @@ function DataPage() {
     const fetchData = async () => {
       try {
         setIsLoading(true);
-        const response = await fetch(`/api/data?${countriesQueryString}`);
+        const response = await fetch(`/api/data?${countriesQueryString}`, {
+          method: "GET",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
         if (!response.ok) {
           throw new Error("Failed to fetch data");
         }
@@ -44,9 +50,9 @@ function DataPage() {
   }, [countriesQueryString]);
 
   return (
-    <main className="h-screen flex justify-center items-center">
+    <main className="bg-base-300 h-screen flex justify-center items-center">
       <section className="container flex gap-16">
-        <div className="filter-box w-96  bg-white border-2 rounded-md p-5 space-y-3">
+        <div className="filter-box w-96  border-2 rounded-md p-5 space-y-3">
           <h2 className=" font-bold text-lg">Filter</h2>
           <CountryFilter
             selectedCountries={selectedCountries}
@@ -56,11 +62,11 @@ function DataPage() {
           <JobFilter />
         </div>
 
-        <div className=" data-container w-full  overflow-hidden relative">
-          <div className="content-header bg-white border-2 rounded-md p-5">
+        <div className=" data-container w-full overflow-hidden relative space-y-2">
+          <div className="content-header border-2 rounded-md p-5">
             <h2 className="text-sm font-bold">Total(61.3M)</h2>
           </div>
-          <div className="content-box h-96 bg-white border-2 rounded-md overflow-auto">
+          <div className="content-box h-96  border-2 rounded-md overflow-auto">
             {isLoading ? <Loader /> : <DataTable data={data} />}
           </div>
         </div>
