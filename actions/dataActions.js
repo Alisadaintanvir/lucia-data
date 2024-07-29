@@ -16,8 +16,8 @@ const getData = async (query) => {
 
   const data = await ContactsV5.find(queryObject).limit(100);
 
-  // const countData = await ContactsV5.countDocuments(queryObject);
-  // console.log(countData);
+  const countData = await ContactsV5.countDocuments(queryObject);
+  console.log(countData);
 
   const plainData = data.map((doc) => doc.toObject());
 

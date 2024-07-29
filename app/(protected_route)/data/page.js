@@ -1,14 +1,18 @@
 "use client";
-import { getData } from "@/actions/dataActions";
 import DataTable from "@/components/data/DataTable";
-import FilterBox from "@/components/data/FilterBox";
 import Loader from "@/components/Loader";
 import { useEffect, useState } from "react";
+import CountryFilter from "@/components/data/filterComponents/CountryFilter";
+import JobFilter from "@/components/data/filterComponents/JobFilter";
 
 function DataPage() {
   const [data, setData] = useState([]);
   const [selectedCountries, setSelectedCountries] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+
+  const countriesQueryString = selectedCountries
+    .map((country) => `country=${country}`)
+    .join("&");
 
   const handleCountryChange = (country, isChecked) => {
     setSelectedCountries((prevCountries) => {
@@ -22,25 +26,34 @@ function DataPage() {
 
   useEffect(() => {
     const fetchData = async () => {
-      setIsLoading(true);
-      const query = { countries: selectedCountries };
-      const fetchedData = await getData(query);
-      setData(fetchedData);
-      setIsLoading(false);
+      try {
+        setIsLoading(true);
+        const response = await fetch(`/api/data?${countriesQueryString}`);
+        if (!response.ok) {
+          throw new Error("Failed to fetch data");
+        }
+        const result = await response.json();
+        setData(result.data);
+      } catch (err) {
+        console.log(err);
+      } finally {
+        setIsLoading(false);
+      }
     };
-
     fetchData();
-  }, [selectedCountries]);
+  }, [countriesQueryString]);
 
   return (
     <main className="h-screen flex justify-center items-center">
       <section className="container flex gap-16">
         <div className="filter-box w-96  bg-white border-2 rounded-md p-5 space-y-3">
-          <h2 className=" font-bold">Filter by Country</h2>
-          <FilterBox
+          <h2 className=" font-bold text-lg">Filter</h2>
+          <CountryFilter
             selectedCountries={selectedCountries}
             onCountryChange={handleCountryChange}
           />
+
+          <JobFilter />
         </div>
 
         <div className=" data-container w-full  overflow-hidden relative">
