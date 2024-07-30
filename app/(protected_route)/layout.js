@@ -16,7 +16,7 @@ export default async function RootLayout({ children }) {
   }
 
   return (
-    <html lang="en" data-theme="cupcake">
+    <html lang="en" data-theme="corporate">
       <body>
         <Header />
         {children}

@@ -12,6 +12,7 @@ export async function GET(req) {
 
   const query = {};
   const limit = parseInt(queryParams.get("limit")) || 20;
+  const page = parseInt(queryParams.get("page")) || 1;
 
   if (queryParams.has("country")) {
     const countries = queryParams.getAll("country");
@@ -20,7 +21,11 @@ export async function GET(req) {
 
   try {
     await connectDB();
-    const data = await ContactsV5.find(query).limit(limit);
+
+    const data = await ContactsV5.find(query)
+      .limit(limit)
+      .skip((page - 1) * limit)
+      .limit(limit);
 
     return NextResponse.json({ status: 200, data });
   } catch (err) {
