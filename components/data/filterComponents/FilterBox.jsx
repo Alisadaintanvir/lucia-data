@@ -1,13 +1,30 @@
 "use client";
 
 import { Plus, Minus } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import DropdownSearchBox from "./DropdownSearchBox";
+import { useRouter } from "next/navigation";
 
 function FilterBox() {
   const filterItem = ["Country", "Job Title", "Gender"];
   const [expandedFilter, setIsExpandedFilter] = useState(null);
   const [selectedCountries, setSelectedCountries] = useState([]);
+
+  const router = useRouter();
+
+  useEffect(() => {
+    if (selectedCountries.length > 0) {
+      const queryParams = [
+        ...selectedCountries.map(
+          (country) => `country=${encodeURIComponent(country)}`
+        ),
+      ].join("&");
+      const url = `/data?${queryParams}`;
+      router.push(url);
+    } else {
+      router.push("/data");
+    }
+  }, [router, selectedCountries]);
 
   const handleCountrySelect = (selectedItems) => {
     setSelectedCountries(selectedItems);

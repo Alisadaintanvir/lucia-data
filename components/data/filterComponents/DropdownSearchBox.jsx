@@ -1,10 +1,14 @@
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { X } from "lucide-react";
 
-function DropdownSearchBox({ data }) {
+function DropdownSearchBox({ data, onSelect }) {
   const [query, setQuery] = useState("");
   const [selectedItems, setSelectedItems] = useState([]);
+
+  useEffect(() => {
+    onSelect(selectedItems);
+  }, [selectedItems, onSelect]);
 
   const filterItems = data
     .filter((item) => item.toLowerCase().includes(query.toLowerCase()))
@@ -29,8 +33,6 @@ function DropdownSearchBox({ data }) {
   const handleRemoveItem = (item) => {
     setSelectedItems((prev) => prev.filter((i) => i !== item));
   };
-
-  console.log(selectedItems);
 
   return (
     <div
@@ -66,20 +68,22 @@ function DropdownSearchBox({ data }) {
         )}
       </div>
 
-      <div className="flex flex-wrap gap-3 mt-3">
-        {selectedItems.map((item) => (
-          <div
-            key={item}
-            className="bg-primary hover:bg-error cursor-pointer px-2 rounded-md text-white text-sm flex gap-1 items-center"
-            onClick={() => handleRemoveItem(item)}
-          >
-            <span>{item}</span>
-            <span>
-              <X size={14} />
-            </span>
-          </div>
-        ))}
-      </div>
+      {selectedItems.length > 0 && (
+        <div className="flex flex-wrap gap-3 mt-3">
+          {selectedItems.map((item) => (
+            <div
+              key={item}
+              className="bg-primary hover:bg-error cursor-pointer px-2 rounded-md text-white text-sm flex gap-1 items-center"
+              onClick={() => handleRemoveItem(item)}
+            >
+              <span>{item}</span>
+              <span>
+                <X size={14} />
+              </span>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
