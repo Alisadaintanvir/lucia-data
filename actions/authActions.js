@@ -37,7 +37,7 @@ export const signUp = async (prevState, formData) => {
     user.password = await bcrypt.hash(password, salt);
     await user.save();
     await createAuthSession(user._id);
-    redirect("/data");
+    redirect("../data");
   } catch (err) {
     throw err;
   }
@@ -82,10 +82,10 @@ export async function signIn(prevState, formData) {
   }
 
   await createAuthSession(user._id);
-  redirect("/data");
+  redirect("../data");
 }
 
 export const logout = async () => {
   await destroySession();
-  redirect("/login");
+  redirect("../login");
 };

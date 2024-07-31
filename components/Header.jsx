@@ -5,7 +5,7 @@ import { logout } from "@/actions/authActions";
 async function Header() {
   const auth = await verifyAuth();
   return (
-    <header className="bg-gray-200 flex items-center justify-center fixed w-full shadow-md">
+    <header className="bg-gray-200 flex items-center justify-center fixed z-20 w-full shadow-md">
       <div className="container mx-auto px-4 py-4 overflow-hidden flex justify-between items-center w-full ">
         <div className="logo">
           <Link href="/">

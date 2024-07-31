@@ -3,7 +3,7 @@ function Loader() {
     <div className="absolute bg-white bg-opacity-20 z-10 h-full w-full flex items-center justify-center">
       <div className="flex items-center">
         <svg
-          className="animate-spin h-20 w-20 text-purple-600"
+          className="animate-spin h-20 w-20 text-primary"
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
           viewBox="0 0 24 24"

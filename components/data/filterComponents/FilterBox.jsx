@@ -1,48 +1,27 @@
 "use client";
-
 import { Plus, Minus } from "lucide-react";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import DropdownSearchBox from "./DropdownSearchBox";
-import { useRouter } from "next/navigation";
+import { useFilterContext } from "@/hooks/useFilter";
+import { countryList } from "@/app/(protected_route)/data/data";
 
 function FilterBox() {
   const filterItem = ["Country", "Job Title", "Gender"];
   const [expandedFilter, setIsExpandedFilter] = useState(null);
-  const [selectedCountries, setSelectedCountries] = useState([]);
 
-  const router = useRouter();
-
-  useEffect(() => {
-    if (selectedCountries.length > 0) {
-      const queryParams = [
-        ...selectedCountries.map(
-          (country) => `country=${encodeURIComponent(country)}`
-        ),
-      ].join("&");
-      const url = `/data?${queryParams}`;
-      router.push(url);
-    } else {
-      router.push("/data");
-    }
-  }, [router, selectedCountries]);
+  const { filters, setFilters } = useFilterContext();
 
   const handleCountrySelect = (selectedItems) => {
-    setSelectedCountries(selectedItems);
+    setFilters((prev) => ({
+      ...prev,
+      countries: selectedItems,
+      currentPage: 1,
+    }));
   };
 
   const handleToggle = (item) => {
     setIsExpandedFilter((prev) => (prev === item ? null : item));
   };
-
-  const countryList = [
-    "United States",
-    "Bangladesh",
-    "Spain",
-    "Germany",
-    "India",
-    "Pakistan",
-    "United Kingdom",
-  ];
 
   const renderFilterContent = (item) => {
     switch (item) {
@@ -51,6 +30,8 @@ function FilterBox() {
           <DropdownSearchBox
             data={countryList}
             onSelect={handleCountrySelect}
+            selectedItems={filters.countries}
+            setSelectedItems={setFilters}
           />
         );
 
@@ -100,7 +81,7 @@ function FilterBox() {
               )}
             </span>
           </div>
-          {expandedFilter == item && renderFilterContent(item)}
+          {expandedFilter === item && renderFilterContent(item)}
         </div>
       ))}
     </>
